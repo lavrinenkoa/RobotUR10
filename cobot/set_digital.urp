@@ -1,0 +1,9 @@
+def program():
+    id = <<ID>>
+    textmsg("urp script started, id= ", id)
+
+    set_digital_out(<<DNUM>>,<<DLEVEL>>)
+    
+    textmsg("urp script finished, id= ", id)
+end
+program()

@@ -1,0 +1,20 @@
+def program():
+    remote_pc = rpc_factory("xmlrpc", "<<RPC_URL>>")
+    id = <<ID>>
+    textmsg("urp script started, id= ", id)
+
+    p = get_actual_tcp_pose()
+    j = get_actual_joint_positions()
+
+    x = p[0]
+    y = p[1]
+    z = p[2]
+    rx = p[3]
+    ry = p[4]
+    rz = p[5]
+    v = [x, y, z, rx, ry, rz, j[0], j[1], j[2], j[3], j[4], j[5], id]
+    textmsg("TCP and Joint position: ", v)
+    ret =remote_pc.get_position(v)
+    textmsg("urp script finished, id= ", id)
+end
+program()

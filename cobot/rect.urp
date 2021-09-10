@@ -1,0 +1,94 @@
+def program():
+    thread myThread():
+        remote_pc = rpc_factory("xmlrpc", "http://10.0.13.96:8080/RPC2")
+        while True:
+            p = get_actual_tcp_pose()
+            textmsg("XXX position: ", p)
+            
+            ret =remote_pc.position(p)
+            # ret = remote_pc.position(p)
+        
+            sleep(0.05)
+            sync()
+        end
+    end
+    def send_pos():
+        p = get_actual_tcp_pose()
+        remote_pc = rpc_factory("xmlrpc", "http://10.0.13.96:8000/RPC2")
+        # ret = remote_pc.position(p)
+        # textmsg("send position: ", p)
+        end
+
+    p = get_actual_tcp_pose()
+    textmsg("start position: ", p)
+
+    thrd = run myThread()
+
+    jp = get_actual_joint_positions()
+    textmsg("joint position: ", jp)
+    # sleep(3)
+    # read_input_float_register(0)
+    # textmsg("Stoped")
+    # halt
+
+    rx = 1.6314474289505936e-07
+    ry = 2.221441046802952
+    rz = -2.221441045995337 - 0.2
+    x = -5.3077194026139074e-08
+    y = -0.23290000021130758
+    z = 1.079399999901637
+    zero_pos=p[x, y, z, rx, ry, rz]
+    send_pos()
+
+    movej(zero_pos)
+    # send_pos()
+    # halt
+
+    h=+0.3
+    x=+0.4
+    y=-0.5
+    z=0.5+h
+    rx=0
+    ry=d2r(90)
+    rz=0
+    Move_To_Pos=p[x, y, z, rx, ry, rz]
+    movel(Move_To_Pos)
+    send_pos()
+
+
+    h=+0.3
+    x=+0.4
+    y=-0.5
+    z=0.5+h
+    rx=0
+    ry=3.14/2
+    rz=0
+    Move_To_Pos=p[x, y, z, rx, ry, rz]
+    movel(Move_To_Pos)
+    send_pos()
+
+    # halt
+
+    y=-0.5
+    z=0+h
+    Move_To_Pos=p[x, y, z, rx, ry, rz]
+    movel(Move_To_Pos)
+
+    y=0.5
+    z=0+h
+    Move_To_Pos=p[x, y, z, rx, ry, rz]
+    movel(Move_To_Pos)
+
+    y=0.5
+    z=0.5+h
+    Move_To_Pos=p[x, y, z, rx, ry, rz]
+    movel(Move_To_Pos)
+
+    y=-0.5
+    z=0.5+h
+    Move_To_Pos=p[x, y, z, rx, ry, rz]
+    movel(Move_To_Pos)
+
+    textmsg("end position: ", p)
+end
+program()

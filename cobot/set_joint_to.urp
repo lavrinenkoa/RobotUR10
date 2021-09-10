@@ -1,0 +1,47 @@
+def program():
+    thread myThread():
+        remote_pc = rpc_factory("xmlrpc", "<<RPC_URL>>")
+        while True:
+            p = get_actual_tcp_pose()
+            j = get_actual_joint_positions()
+
+            x = p[0]
+            y = p[1]
+            z = p[2]
+            rx = p[3]
+            ry = p[4]
+            rz = p[5]
+            v = [x, y, z, rx, ry, rz, j[0], j[1], j[2], j[3], j[4], j[5]]
+            textmsg("Joint position: ", v)
+            ret =remote_pc.model(v)
+
+            sleep(0.1)
+            sync()
+        end
+    end
+
+    def position_ready(id):
+        p = get_actual_tcp_pose()
+        remote_pc = rpc_factory("xmlrpc", "<<RPC_URL>>")
+        ret = remote_pc.position_ready(id)
+        textmsg("position ready: ", p)
+        end
+
+    id = <<ID>>
+    textmsg("urp script started, id= ", id)
+
+    thrd = run myThread()
+
+    j0=<<J0>>
+    j1=<<J1>>
+    j2=<<J2>>
+    j3=<<J3>>
+    j4=<<J4>>
+    j5=<<J5>>
+
+    movej([j0,j1,j2,j3,j4,j5])
+    #sleep(1)
+    position_ready(id)
+    textmsg("urp script finished, id= ", id)
+end
+program()
